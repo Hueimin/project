@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Pingpong">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="47dp" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Picture1"
+            android:gravity="center"
+            android:textColor="#FF17B9A1"
+            android:textSize="20dp"
+            android:typeface="monospace"
+            android:textStyle="bold"/>
+
+        <com.github.mikephil.charting.charts.RadarChart
+            android:id="@+id/angleChart"
+            android:layout_width="match_parent"
+            android:layout_height="365dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="#F3D670"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
+
+        </com.github.mikephil.charting.charts.RadarChart>
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="159dp"
+            android:text="x月x日x點x分       xx分" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Picture2"
+            android:gravity="center"
+            android:textColor="#FF17B9A1"
+            android:textSize="20dp"
+            android:typeface="monospace"
+            android:textStyle="bold"/>
+
+        <com.github.mikephil.charting.charts.RadarChart
+            android:id="@+id/speedChart"
+            android:layout_width="match_parent"
+            android:layout_height="365dp"
+            android:layout_marginTop="8dp"
+            android:background="#F3D670"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.02">
+
+        </com.github.mikephil.charting.charts.RadarChart>
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="match_parent"
+            android:layout_height="159dp"
+            android:text="y月y日y點y分       yy分" />
+
+    </LinearLayout>
+</ScrollView>
