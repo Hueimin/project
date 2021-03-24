@@ -7,7 +7,9 @@ import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -287,6 +289,43 @@ public class Baseball extends AppCompatActivity {
                 }
 
                 anglechart.invalidate(); //畫出圖形
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+                //
+                //textView
+                String[] AngleNumber = new String[5];
+                //Max
+                for(int i = 0; i < 5; i++) {
+                    AngleNumber[i] = String.valueOf(fingerangle.getMaxFingerAngle().get(i));
+                }
+
+                TextView thumbAngle = (TextView)findViewById(R.id.thumbAngle);
+                TextView indexAngle = (TextView)findViewById(R.id.indexAngle);
+                TextView middleAngle = (TextView)findViewById(R.id.middleAngle);
+                TextView ringAngle = (TextView)findViewById(R.id.ringAngle);
+                TextView littleAngle = (TextView)findViewById(R.id.littleAngle);
+                thumbAngle.setText(AngleNumber[0]);
+                indexAngle.setText(AngleNumber[1]);
+                middleAngle.setText(AngleNumber[2]);
+                ringAngle.setText(AngleNumber[3]);
+                littleAngle.setText(AngleNumber[4]);
+
+                //Min
+                for(int i = 0; i < 5; i++) {
+                    AngleNumber[i] = String.valueOf(fingerangle.getMinFingerAngle().get(i));
+                }
+
+                TextView thumbSpeed = (TextView)findViewById(R.id.thumbSpeed);
+                TextView indexSpeed = (TextView)findViewById(R.id.indexSpeed);
+                TextView middleSpeed = (TextView)findViewById(R.id.middleSpeed);
+                TextView ringSpeed = (TextView)findViewById(R.id.ringSpeed);
+                TextView littleSpeed = (TextView)findViewById(R.id.littleSpeed);
+                thumbSpeed.setText(AngleNumber[0]);
+                indexSpeed.setText(AngleNumber[1]);
+                middleSpeed.setText(AngleNumber[2]);
+                ringSpeed.setText(AngleNumber[3]);
+                littleSpeed.setText(AngleNumber[4]);
             }
 
             @Override

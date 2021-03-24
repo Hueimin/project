@@ -16,16 +16,22 @@
             android:layout_width="match_parent"
             android:layout_height="47dp" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="#17B9A1" />
+
         <TextView
             android:id="@+id/textView1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:text="Angle"
             android:gravity="center"
-            android:textColor="#FF17B9A1"
+            android:textColor="#FFFFFF"
             android:textSize="20dp"
             android:typeface="monospace"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:background="#FF17B9A1"/>
 
         <com.github.mikephil.charting.charts.RadarChart
             android:id="@+id/angleChart"
@@ -44,21 +50,197 @@
         </com.github.mikephil.charting.charts.RadarChart>
 
         <TextView
-            android:id="@+id/angleText"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:text="Angle" />
+            android:layout_height="25dp"
+            android:text="  Max Finger Angle："
+            android:textColor="#FF17B9A1"
+            android:background="@drawable/textview_border"
+            android:textStyle="bold" />
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:rowCount="2"
+            android:columnCount="6">
+
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="32dp" />
+            <TextView
+                android:text="大拇指"
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:textColor="#000000"
+                android:gravity="center" />
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:text="食指"
+                android:textColor="#000000"
+                android:gravity="center" />
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:text="中指"
+                android:textColor="#000000"
+                android:gravity="center" />
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:text="無名指"
+                android:textColor="#000000"
+                android:gravity="center" />
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:text="小拇指"
+                android:textColor="#000000"
+                android:gravity="center" />
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:text="分數"
+                android:textColor="#000000"
+                android:gravity="center" />
+
+            <!--分數-->
+            <TextView
+                android:id="@+id/thumbAngle"
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:textColor="#000000"
+                android:gravity="center"/>
+            <TextView
+                android:id="@+id/indexAngle"
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:textColor="#000000"
+                android:gravity="center"/>
+            <TextView
+                android:id="@+id/middleAngle"
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:gravity="center"
+                android:textColor="#000000" />
+            <TextView
+                android:id="@+id/ringAngle"
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:gravity="center"
+                android:textColor="#000000" />
+            <TextView
+                android:id="@+id/littleAngle"
+                android:layout_width="62dp"
+                android:layout_height="36dp"
+                android:gravity="center"
+                android:textColor="#000000" />
+        </GridLayout>
+
+        <TextView
+            android:id="@+id/MinangleText"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:text="  Min Finger Angle："
+            android:textColor="#FF17B9A1"
+            android:background="@drawable/textview_border"
+            android:textStyle="bold" />
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:rowCount="2"
+            android:columnCount="6">
+
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:textColor="#000000" />
+            <TextView
+                android:text="大拇指"
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:textColor="#000000"
+                android:gravity="center" />
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:text="食指"
+                android:textColor="#000000"
+                android:gravity="center" />
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:text="中指"
+                android:textColor="#000000"
+                android:gravity="center" />
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:text="無名指"
+                android:textColor="#000000"
+                android:gravity="center" />
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:text="小拇指"
+                android:textColor="#000000"
+                android:gravity="center" />
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:text="分數"
+                android:textColor="#000000"
+                android:gravity="center" />
+
+            <!--分數-->
+            <TextView
+                android:id="@+id/thumbSpeed"
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:textColor="#000000"
+                android:gravity="center"/>
+            <TextView
+                android:id="@+id/indexSpeed"
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:textColor="#000000"
+                android:gravity="center"/>
+            <TextView
+                android:id="@+id/middleSpeed"
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:gravity="center"
+                android:textColor="#000000" />
+            <TextView
+                android:id="@+id/ringSpeed"
+                android:layout_width="65dp"
+                android:layout_height="32dp"
+                android:gravity="center"
+                android:textColor="#000000" />
+            <TextView
+                android:id="@+id/littleSpeed"
+                android:layout_width="62dp"
+                android:layout_height="36dp"
+                android:gravity="center"
+                android:textColor="#000000" />
+        </GridLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="#17B9A1" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Speed"
+            android:layout_height="30dp"
+            android:background="#FF17B9A1"
             android:gravity="center"
-            android:textColor="#FF17B9A1"
+            android:text="Speed"
+            android:textColor="#FFFFFF"
             android:textSize="20dp"
-            android:typeface="monospace"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:typeface="monospace" />
 
         <com.github.mikephil.charting.charts.RadarChart
             android:id="@+id/speedChart"
@@ -77,9 +259,17 @@
         </com.github.mikephil.charting.charts.RadarChart>
 
         <TextView
-            android:id="@+id/speedText"
+            android:id="@+id/MaxspeedText"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:text="Speed" />
+            android:layout_height="100dp"
+            android:text="MaxSpeed"
+            android:textColor="#000000"/>
+
+        <TextView
+            android:id="@+id/MinspeedText"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="MinSpeed"
+            android:textColor="#000000"/>
     </LinearLayout>
 </ScrollView>
