@@ -10,31 +10,32 @@
         android:id="@+id/speedChart"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="@id/guideline5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.39"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
-
+        app:layout_constraintTop_toTopOf="parent">
     </com.github.mikephil.charting.charts.RadarChart>
 
     <TextView
         android:id="@+id/textView12"
         android:layout_width="match_parent"
         android:layout_height="25dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/textview_border"
         android:text="  Max Finger Speed："
         android:textColor="#FF17B9A1"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/Grid"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/speedChart" />
 
     <GridLayout
+        android:id="@+id/Grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:columnCount="6"
         android:rowCount="2"

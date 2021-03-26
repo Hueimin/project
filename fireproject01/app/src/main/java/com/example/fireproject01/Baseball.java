@@ -57,9 +57,15 @@ public class Baseball extends AppCompatActivity {
 
     private Angle angle;
 
+    private Speed speed;
+
     private ArrayList<String> time = new ArrayList<>();
 
     DatabaseReference databaseAngle;
+
+    Button angleButton;
+
+    Button speedButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,79 +78,50 @@ public class Baseball extends AppCompatActivity {
 
         //firebase
         databaseAngle = FirebaseDatabase.getInstance().getReference();
+
 //////new///////
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        final FragmentManager fragmentManager = getFragmentManager();
+        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         angle = new Angle();
-        //傳資料給Angle
+        speed = new Speed();
+
+        //傳資料給Angle,Speed
         Bundle bundle = new Bundle();
         bundle.putString("NAME", take.getString("NAME"));
         angle.setArguments(bundle);
+        speed.setArguments(bundle);
 
-        fragmentTransaction.replace(R.id.angleFrame, angle, "Angle");
-        //fragmentTransaction.add(R.id.speedFrame, speed, "Speed");
-        //fragmentTransaction.hide(R.id.speedFrame, speed, "Speed"); //保險加一下，可以測試看看沒有加會怎樣
+        fragmentTransaction.add(R.id.angleFrame, angle, "Angle");
+        fragmentTransaction.add(R.id.angleFrame, speed, "Speed");
+        fragmentTransaction.hide(speed);
         fragmentTransaction.commit();
-///////finish///////
 
-        ////////////////////////////////////////////////////////////////////
-        /////////////////////////////speedChart/////////////////////////////
-        ////////////////////////////////////////////////////////////////////
-//        speedchart = findViewById(R.id.speedChart);
-//
-//        //we configure the radar chart
-//        speedchart.setBackgroundColor(Color.WHITE);
-//        speedchart.getDescription().setEnabled(false);
-//        speedchart.setWebLineWidth(1f); //設置直徑方向上那條線的寬度 //好像沒用
-//
-//        //useful to export your graph
-//        speedchart.setWebColor(Color.BLACK); //設置直徑線的顏色(5條線)
-//        speedchart.setWebLineWidth(1.5f); //設置直徑方向上那條線的寬度(5條線)
-//        speedchart.setWebColorInner(Color.BLACK); //設置圈線的顏色
-//        speedchart.setWebLineWidthInner(1.5f);
-//        speedchart.setWebAlpha(100); //設置顏色的透明度
-//
-//        //animate the chart //圖表數據顯示動畫
-//        speedchart.animateXY(1400, 1400, Easing.EasingOption.EaseInQuad, Easing.EasingOption.EaseInQuad);
-//
-//        //x axis
-//        XAxis xsAxis = speedchart.getXAxis();
-//        xsAxis.setTextSize(12f);
-//        xsAxis.setTypeface(Typeface.DEFAULT_BOLD); //五角的文字
-//        xsAxis.setYOffset(0); //?
-//        xsAxis.setXOffset(0); //?
-//        xsAxis.setValueFormatter(new IAxisValueFormatter() {
-//            //we will compare two employees in a radar chart
-//            //so we define qualities to compare
-//            private String[] qualities = new String[] {"大拇指", "食指", "中指", "無名指", "小拇指"};
-//
-//            @Override
-//            public String getFormattedValue(float value, AxisBase axis) {
-//                return qualities[(int)value % qualities.length];
-//            }
-//        });
-//
-//        xsAxis.setTextColor(Color.BLACK);
-//
-//        //Y axis
-//        YAxis ysAsix = speedchart.getYAxis();
-//        ysAsix.setLabelCount(NB_QUALITIES, true);
-//        ysAsix.setTextSize(9f);
-//        ysAsix.setAxisMinimum(MIN);
-//        ysAsix.setAxisMaximum(MAX); //we define min and max for axis
-//        ysAsix.setDrawLabels(false);
-//
-//        //we configure legend for our radar chart //圖例
-//        Legend ls = speedchart.getLegend();
-//        ls.setTextSize(15f);
-//        ls.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-//        ls.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-//        ls.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-//        ls.setDrawInside(false);
-//        ls.setXEntrySpace(7f);
-//        ls.setYEntrySpace(5f);
-//        ls.setTextColor(Color.BLACK);
+        angleButton = (Button)findViewById(R.id.ANGLE);
+        speedButton = (Button)findViewById(R.id.SPEED);
+
+        angleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.show(angle);
+                fragmentTransaction.hide(speed);
+                fragmentTransaction.commit();
+                System.out.println("angle");
+            }
+        });
+
+        speedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.show(speed);
+                fragmentTransaction.hide(angle);
+                fragmentTransaction.commit();
+                System.out.println("speed");
+            }
+        });
+///////finish///////
 
         ////////////////////////////////////////////////////////////////////
         /////////////////////////下拉式選單(spinner)/////////////////////////
@@ -184,7 +161,7 @@ public class Baseball extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 angle.setValue("Baseball", time.get(position));
-//                setspeedData(position);
+                speed.setValue("Baseball", time.get(position));
             }
 
             @Override
@@ -194,70 +171,70 @@ public class Baseball extends AppCompatActivity {
         });
     }
 
-    private void setspeedData(final int index) {
-        databaseAngle.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<RadarEntry> employee1 = new ArrayList<>();
-
-                Storage fingerspeed = dataSnapshot.child(gameAddress).child(time.get(index)).getValue(Storage.class);
-
-                for(int i = 0; i < 5; i++) {
-                    employee1.add(new RadarEntry(fingerspeed.getMaxFingerSpeed().get(i)));
-                }
-
-                //we create two radar data sets objects with these data
-                RadarDataSet set1 = new RadarDataSet(employee1, "Max Finger's Speed");
-                set1.setColor(Color.rgb(23, 185, 161));
-                set1.setFillColor(Color.rgb(23, 185, 161));
-                set1.setDrawFilled(true);
-                set1.setFillAlpha(180);
-                set1.setLineWidth(2f);
-                set1.setDrawHighlightIndicators(false);
-                set1.setDrawHighlightCircleEnabled(true);
-
-                ArrayList<IRadarDataSet> sets = new ArrayList<>();
-                sets.add(set1);
-
-                //we create Radar Data object which will be added to the Radar Chart for rendering
-                RadarData data = new RadarData(sets);
-                data.setValueTextSize(8f);
-                data.setDrawValues(false);
-                data.setValueTextColor(Color.BLACK);
-
-                speedchart.setData(data);
-
-                for (IDataSet<?> set : speedchart.getData().getDataSets()) {
-                    set.setDrawValues(!set.isDrawValuesEnabled());
-                }
-
-                speedchart.invalidate();
-
-                ////////////////////////////////////////////////////////////////////
-                //////////////////////////////textView//////////////////////////////
-                ////////////////////////////////////////////////////////////////////
-                String[] AngleNumber = new String[5];
-                //Max
-                for(int i = 0; i < 5; i++) {
-                    AngleNumber[i] = String.valueOf(fingerspeed.getMaxFingerSpeed().get(i));
-                }
-
-                TextView MaxthumbSpeed = (TextView)findViewById(R.id.MaxthumbSpeed);
-                TextView MaxindexSpeed = (TextView)findViewById(R.id.MaxindexSpeed);
-                TextView MaxmiddleSpeed = (TextView)findViewById(R.id.MaxmiddleSpeed);
-                TextView MaxringSpeed = (TextView)findViewById(R.id.MaxringSpeed);
-                TextView MaxlittleSpeed = (TextView)findViewById(R.id.MaxlittleSpeed);
-                MaxthumbSpeed.setText(AngleNumber[0]);
-                MaxindexSpeed.setText(AngleNumber[1]);
-                MaxmiddleSpeed.setText(AngleNumber[2]);
-                MaxringSpeed.setText(AngleNumber[3]);
-                MaxlittleSpeed.setText(AngleNumber[4]);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
+//    private void setspeedData(final int index) {
+//        databaseAngle.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                ArrayList<RadarEntry> employee1 = new ArrayList<>();
+//
+//                Storage fingerspeed = dataSnapshot.child(gameAddress).child(time.get(index)).getValue(Storage.class);
+//
+//                for(int i = 0; i < 5; i++) {
+//                    employee1.add(new RadarEntry(fingerspeed.getMaxFingerSpeed().get(i)));
+//                }
+//
+//                //we create two radar data sets objects with these data
+//                RadarDataSet set1 = new RadarDataSet(employee1, "Max Finger's Speed");
+//                set1.setColor(Color.rgb(23, 185, 161));
+//                set1.setFillColor(Color.rgb(23, 185, 161));
+//                set1.setDrawFilled(true);
+//                set1.setFillAlpha(180);
+//                set1.setLineWidth(2f);
+//                set1.setDrawHighlightIndicators(false);
+//                set1.setDrawHighlightCircleEnabled(true);
+//
+//                ArrayList<IRadarDataSet> sets = new ArrayList<>();
+//                sets.add(set1);
+//
+//                //we create Radar Data object which will be added to the Radar Chart for rendering
+//                RadarData data = new RadarData(sets);
+//                data.setValueTextSize(8f);
+//                data.setDrawValues(false);
+//                data.setValueTextColor(Color.BLACK);
+//
+//                speedchart.setData(data);
+//
+//                for (IDataSet<?> set : speedchart.getData().getDataSets()) {
+//                    set.setDrawValues(!set.isDrawValuesEnabled());
+//                }
+//
+//                speedchart.invalidate();
+//
+//                ////////////////////////////////////////////////////////////////////
+//                //////////////////////////////textView//////////////////////////////
+//                ////////////////////////////////////////////////////////////////////
+//                String[] AngleNumber = new String[5];
+//                //Max
+//                for(int i = 0; i < 5; i++) {
+//                    AngleNumber[i] = String.valueOf(fingerspeed.getMaxFingerSpeed().get(i));
+//                }
+//
+//                TextView MaxthumbSpeed = (TextView)findViewById(R.id.MaxthumbSpeed);
+//                TextView MaxindexSpeed = (TextView)findViewById(R.id.MaxindexSpeed);
+//                TextView MaxmiddleSpeed = (TextView)findViewById(R.id.MaxmiddleSpeed);
+//                TextView MaxringSpeed = (TextView)findViewById(R.id.MaxringSpeed);
+//                TextView MaxlittleSpeed = (TextView)findViewById(R.id.MaxlittleSpeed);
+//                MaxthumbSpeed.setText(AngleNumber[0]);
+//                MaxindexSpeed.setText(AngleNumber[1]);
+//                MaxmiddleSpeed.setText(AngleNumber[2]);
+//                MaxringSpeed.setText(AngleNumber[3]);
+//                MaxlittleSpeed.setText(AngleNumber[4]);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 }

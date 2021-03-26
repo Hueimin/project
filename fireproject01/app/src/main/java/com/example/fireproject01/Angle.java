@@ -80,11 +80,11 @@ public class Angle extends Fragment {
         angleChart.setWebLineWidth(1f); //設置直徑方向上那條線的寬度 //好像沒用
 
         //useful to export your graph
-        angleChart.setWebColor(Color.BLACK); //設置直徑線的顏色(5條線)
+        angleChart.setWebColor(Color.GRAY); //設置直徑線的顏色(5條線)
         angleChart.setWebLineWidth(1.5f); //設置直徑方向上那條線的寬度(5條線)
-        angleChart.setWebColorInner(Color.BLACK); //設置圈線的顏色
+        angleChart.setWebColorInner(Color.GRAY); //設置圈線的顏色
         angleChart.setWebLineWidthInner(1.5f);
-        angleChart.setWebAlpha(100); //設置顏色的透明度
+        angleChart.setWebAlpha(255); //設置顏色的透明度
 
         //animate the chart //圖表數據顯示動畫
         angleChart.animateXY(1400, 1400, Easing.EasingOption.EaseInQuad, Easing.EasingOption.EaseInQuad);
