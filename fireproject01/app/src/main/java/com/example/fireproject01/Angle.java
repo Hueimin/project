@@ -1,0 +1,234 @@
+package com.example.fireproject01;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import android.app.Fragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.RadarData;
+import com.github.mikephil.charting.data.RadarDataSet;
+import com.github.mikephil.charting.data.RadarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
+public class Angle extends Fragment {
+
+    //we define min and max for the values on our Radar Chart
+    public static final float MAX = 180, MIN = 0;
+    public static final int NB_QUALITIES = 5; //nb qualities on our Radar Chart
+
+    private String name;
+
+    private String gameAddress; //"data/" + take.getString("NAME") + "/" + GAME_NAME
+
+    private RadarChart angleChart;
+
+    private View view;
+
+    DatabaseReference databaseAngle;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.angle, container, false);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Bundle take = getArguments();
+        name = take.getString("NAME");
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        this.view = view;
+        databaseAngle = FirebaseDatabase.getInstance().getReference();
+
+        ////////////////////////////////////////////////////////////////////
+        /////////////////////////////angleChart/////////////////////////////
+        ////////////////////////////////////////////////////////////////////
+        angleChart = view.findViewById(R.id.angleChart);
+
+        //we configure the radar chart
+        angleChart.setBackgroundColor(Color.WHITE);
+        angleChart.getDescription().setEnabled(false);
+        angleChart.setWebLineWidth(1f); //設置直徑方向上那條線的寬度 //好像沒用
+
+        //useful to export your graph
+        angleChart.setWebColor(Color.BLACK); //設置直徑線的顏色(5條線)
+        angleChart.setWebLineWidth(1.5f); //設置直徑方向上那條線的寬度(5條線)
+        angleChart.setWebColorInner(Color.BLACK); //設置圈線的顏色
+        angleChart.setWebLineWidthInner(1.5f);
+        angleChart.setWebAlpha(100); //設置顏色的透明度
+
+        //animate the chart //圖表數據顯示動畫
+        angleChart.animateXY(1400, 1400, Easing.EasingOption.EaseInQuad, Easing.EasingOption.EaseInQuad);
+
+        //x axis
+        XAxis xaAxis = angleChart.getXAxis();
+        xaAxis.setTextSize(12f);
+        xaAxis.setTypeface(Typeface.DEFAULT_BOLD); //五角的文字
+        xaAxis.setYOffset(0); //?
+        xaAxis.setXOffset(0); //?
+        xaAxis.setValueFormatter(new IAxisValueFormatter() {
+            //we will compare two employees in a radar chart
+            //so we define qualities to compare
+            private String[] qualities = new String[] {"大拇指", "食指", "中指", "無名指", "小拇指"};
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return qualities[(int)value % qualities.length];
+            }
+        });
+
+        xaAxis.setTextColor(Color.BLACK);
+
+        //Y axis
+        YAxis yaAsix = angleChart.getYAxis();
+        yaAsix.setLabelCount(NB_QUALITIES, true);
+        yaAsix.setTextSize(9f);
+        yaAsix.setAxisMinimum(MIN);
+        yaAsix.setAxisMaximum(MAX); //we define min and max for axis
+        yaAsix.setDrawLabels(false);
+
+        //we configure legend for our radar chart //圖例
+        Legend la = angleChart.getLegend();
+        la.setTextSize(15f);
+        la.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        la.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        la.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        la.setDrawInside(false);
+        la.setXEntrySpace(7f);
+        la.setYEntrySpace(5f);
+        la.setTextColor(Color.BLACK);
+    }
+
+    public void setValue(String gameName, final String day) {
+        gameAddress = "data/" + name + "/" + gameName;
+        databaseAngle.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ////////////////////////////////////////////////////////////////////
+                /////////////////////////////RadarChart/////////////////////////////
+                ////////////////////////////////////////////////////////////////////
+                ArrayList<RadarEntry> employee1 = new ArrayList<>(); //最大手指角度 maxFingerAngle
+                ArrayList<RadarEntry> employee2 = new ArrayList<>(); //最小手指角度 minFingerAngle
+
+                Storage fingerangle = dataSnapshot.child(gameAddress).child(day).getValue(Storage.class);
+
+                for(int i = 0; i < 5; i++) {
+                    employee1.add(new RadarEntry(fingerangle.getMaxFingerAngle().get(i)));
+                    employee2.add(new RadarEntry(fingerangle.getMinFingerAngle().get(i)));
+                }
+
+                //we create two radar data sets objects with these data
+                //maxFingerAngle
+                RadarDataSet set1 = new RadarDataSet(employee1, "Max Finger's Angle");
+                set1.setColor(Color.rgb(23, 185, 161));
+                set1.setFillColor(Color.rgb(23, 185, 161));
+                set1.setDrawFilled(true);
+                set1.setFillAlpha(180); //透明度
+                set1.setLineWidth(2f); //線粗度
+                set1.setDrawHighlightIndicators(false);
+                set1.setDrawHighlightCircleEnabled(true);
+
+                //minFingerAngle
+                RadarDataSet set2 = new RadarDataSet(employee2, "Min Finger's Angle");
+                set2.setColor(Color.rgb(255, 118, 137));
+                set2.setFillColor(Color.rgb(255, 118, 137));
+                set2.setDrawFilled(true);
+                set2.setFillAlpha(180);
+                set2.setLineWidth(2f);
+                set2.setDrawHighlightIndicators(false);
+                set2.setDrawHighlightCircleEnabled(true);
+
+                ArrayList<IRadarDataSet> sets = new ArrayList<>();
+                sets.add(set1);
+                sets.add(set2);
+
+                //we create Radar Data object which will be added to the Radar Chart for rendering
+                RadarData data = new RadarData(sets);
+                data.setValueTextSize(8f);
+                data.setDrawValues(false);
+                data.setValueTextColor(Color.BLACK);
+
+                angleChart.setData(data);
+
+                //顯示數值
+                for (IDataSet<?> set : angleChart.getData().getDataSets()) {
+                    set.setDrawValues(!set.isDrawValuesEnabled());
+                }
+
+                angleChart.invalidate(); //畫出圖形
+
+
+                ////////////////////////////////////////////////////////////////////
+                //////////////////////////////textView//////////////////////////////
+                ////////////////////////////////////////////////////////////////////
+                String[] AngleNumber = new String[5];
+                //Max
+                for(int i = 0; i < 5; i++) {
+                    AngleNumber[i] = String.valueOf(fingerangle.getMaxFingerAngle().get(i));
+                }
+
+                TextView MaxthumbAngle = view.findViewById(R.id.MaxthumbAngle);
+                TextView MaxindexAngle = view.findViewById(R.id.MaxindexAngle);
+                TextView MaxmiddleAngle = view.findViewById(R.id.MaxmiddleAngle);
+                TextView MaxringAngle = view.findViewById(R.id.MaxringAngle);
+                TextView MaxlittleAngle = view.findViewById(R.id.MaxlittleAngle);
+                MaxthumbAngle.setText(AngleNumber[0]);
+                MaxindexAngle.setText(AngleNumber[1]);
+                MaxmiddleAngle.setText(AngleNumber[2]);
+                MaxringAngle.setText(AngleNumber[3]);
+                MaxlittleAngle.setText(AngleNumber[4]);
+
+                //Min
+                for(int i = 0; i < 5; i++) {
+                    AngleNumber[i] = String.valueOf(fingerangle.getMinFingerAngle().get(i));
+                }
+
+                TextView MinthumbAngle = view.findViewById(R.id.MinthumbAngle);
+                TextView MinindexAngle = view.findViewById(R.id.MinindexAngle);
+                TextView MinmiddleAngle = view.findViewById(R.id.MinmiddleAngle);
+                TextView MinringAngle = view.findViewById(R.id.MinringAngle);
+                TextView MinlittleAngle = view.findViewById(R.id.MinlittleAngle);
+                MinthumbAngle.setText(AngleNumber[0]);
+                MinindexAngle.setText(AngleNumber[1]);
+                MinmiddleAngle.setText(AngleNumber[2]);
+                MinringAngle.setText(AngleNumber[3]);
+                MinlittleAngle.setText(AngleNumber[4]);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { //不可刪
+
+            }
+        });
+    }
+
+}
