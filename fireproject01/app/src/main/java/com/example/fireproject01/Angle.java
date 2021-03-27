@@ -53,11 +53,13 @@ public class Angle extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //上傳到angle.xml
         return inflater.inflate(R.layout.angle, container, false);
     }
 
     @Override
     public void onAttach(Context context) {
+        //傳NAME的路徑至此
         super.onAttach(context);
         Bundle take = getArguments();
         name = take.getString("NAME");
@@ -66,7 +68,7 @@ public class Angle extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.view = view;
+        this.view = view; //在此用findViewById會出錯，所以要用view.
         databaseAngle = FirebaseDatabase.getInstance().getReference();
 
         ////////////////////////////////////////////////////////////////////
@@ -128,6 +130,8 @@ public class Angle extends Fragment {
         la.setTextColor(Color.BLACK);
     }
 
+
+    //設定Radar chart數值
     public void setValue(String gameName, final String day) {
         gameAddress = "data/" + name + "/" + gameName;
         databaseAngle.addListenerForSingleValueEvent(new ValueEventListener() {

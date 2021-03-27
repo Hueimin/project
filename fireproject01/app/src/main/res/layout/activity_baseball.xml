@@ -54,14 +54,13 @@
 
 <!--要被切換的Fragment-->
     <FrameLayout
-        android:id="@+id/angleFrame"
+        android:id="@+id/Frame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2">
-
     </FrameLayout>
 
     <androidx.constraintlayout.widget.Guideline

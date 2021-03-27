@@ -180,7 +180,7 @@ public class Speed extends Fragment {
                 String[] AngleNumber = new String[5];
                 //Max
                 for(int i = 0; i < 5; i++) {
-                    AngleNumber[i] = String.valueOf(fingerSpeed.getMaxFingerAngle().get(i));
+                    AngleNumber[i] = String.valueOf(fingerSpeed.getMaxFingerSpeed().get(i));
                 }
 
                 TextView MaxthumbSpeed = (TextView)view.findViewById(R.id.MaxthumbSpeed);
