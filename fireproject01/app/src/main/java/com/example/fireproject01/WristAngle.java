@@ -35,7 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class WirstAngle extends Fragment {
+public class WristAngle extends Fragment {
 
     //we define min and max for the values on our Radar Chart
     public static final float MAX = 180, MIN = -180;
@@ -54,7 +54,7 @@ public class WirstAngle extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //上傳到angle.xml
-        return inflater.inflate(R.layout.wirst_angle, container, false);
+        return inflater.inflate(R.layout.wrist_angle, container, false);
     }
 
     @Override
@@ -130,7 +130,7 @@ public class WirstAngle extends Fragment {
         la.setTextColor(Color.BLACK);
     }
 
-    public void setWirstValue(String gameName, final String day) {
+    public void setWristValue(String gameName, final String day) {
         gameAddress = "data/" + name + "/" + gameName;
         databaseAngle.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -150,7 +150,7 @@ public class WirstAngle extends Fragment {
 
                 //we create two radar data sets objects with these data
                 //maxFingerAngle
-                RadarDataSet set1 = new RadarDataSet(employee1, "Max Wirst's Angle");
+                RadarDataSet set1 = new RadarDataSet(employee1, "Max Wrist's Angle");
                 set1.setColor(Color.rgb(23, 185, 161));
                 set1.setFillColor(Color.rgb(23, 185, 161));
                 set1.setDrawFilled(true);
@@ -160,7 +160,7 @@ public class WirstAngle extends Fragment {
                 set1.setDrawHighlightCircleEnabled(true);
 
                 //minFingerAngle
-                RadarDataSet set2 = new RadarDataSet(employee2, "Min Wirst's Angle");
+                RadarDataSet set2 = new RadarDataSet(employee2, "Min Wrist's Angle");
                 set2.setColor(Color.rgb(255, 118, 137));
                 set2.setFillColor(Color.rgb(255, 118, 137));
                 set2.setDrawFilled(true);

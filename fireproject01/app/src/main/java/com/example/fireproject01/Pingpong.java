@@ -2,8 +2,6 @@ package com.example.fireproject01;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
@@ -15,18 +13,6 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.charts.RadarChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.RadarData;
-import com.github.mikephil.charting.data.RadarDataSet;
-import com.github.mikephil.charting.data.RadarEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,8 +36,8 @@ public class Pingpong extends AppCompatActivity {
     private Spinner spinner;
 
     //將Angle與Speed.java宣告至此
-    private WirstAngle angle;
-    private WirstSpeed speed;
+    private WristAngle angle;
+    private WristSpeed speed;
 
     DatabaseReference databaseAngle;
 
@@ -77,8 +63,8 @@ public class Pingpong extends AppCompatActivity {
         final FragmentManager fragmentManager = getFragmentManager();
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        angle = new WirstAngle();
-        speed = new WirstSpeed();
+        angle = new WristAngle();
+        speed = new WristSpeed();
 
         //傳資料給Angle,Speed.java
         Bundle bundle = new Bundle();
@@ -152,8 +138,8 @@ public class Pingpong extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                angle.setWirstValue("Table Tennis", time.get(position));
-                speed.setWirstValue("Table Tennis", time.get(position));
+                angle.setWristValue("Table Tennis", time.get(position));
+                speed.setWristValue("Table Tennis", time.get(position));
             }
 
             @Override

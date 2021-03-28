@@ -35,7 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class WirstSpeed extends Fragment {
+public class WristSpeed extends Fragment {
 
     //we define min and max for the values on our Radar Chart
     public static final float MAX = 180, MIN = 0;
@@ -53,7 +53,7 @@ public class WirstSpeed extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.wirst_speed, container, false);
+        return inflater.inflate(R.layout.wrist_speed, container, false);
     }
 
     @Override
@@ -128,7 +128,7 @@ public class WirstSpeed extends Fragment {
         ls.setTextColor(Color.BLACK);
     }
 
-    public void setWirstValue(String gameName, final String day) {
+    public void setWristValue(String gameName, final String day) {
         gameAddress = "data/" + name + "/" + gameName;
         databaseSpeed.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -146,7 +146,7 @@ public class WirstSpeed extends Fragment {
 
                 //we create two radar data sets objects with these data
                 //maxFingerSpeed
-                RadarDataSet set1 = new RadarDataSet(employee1, "Max Wirst's Speed");
+                RadarDataSet set1 = new RadarDataSet(employee1, "Max Wrist's Speed");
                 set1.setColor(Color.rgb(23, 185, 161));
                 set1.setFillColor(Color.rgb(23, 185, 161));
                 set1.setDrawFilled(true);
