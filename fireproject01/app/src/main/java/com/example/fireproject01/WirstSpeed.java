@@ -35,7 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class Speed extends Fragment {
+public class WirstSpeed extends Fragment {
 
     //we define min and max for the values on our Radar Chart
     public static final float MAX = 180, MIN = 0;
@@ -53,7 +53,7 @@ public class Speed extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.speed, container, false);
+        return inflater.inflate(R.layout.wirst_speed, container, false);
     }
 
     @Override
@@ -128,7 +128,7 @@ public class Speed extends Fragment {
         ls.setTextColor(Color.BLACK);
     }
 
-    public void setValue(String gameName, final String day) {
+    public void setWirstValue(String gameName, final String day) {
         gameAddress = "data/" + name + "/" + gameName;
         databaseSpeed.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -138,15 +138,15 @@ public class Speed extends Fragment {
                 ////////////////////////////////////////////////////////////////////
                 ArrayList<RadarEntry> employee1 = new ArrayList<>(); //最大手指速度 maxFingerSpeed
 
-                Storage fingerSpeed = dataSnapshot.child(gameAddress).child(day).getValue(Storage.class);
+                Storage wirstSpeed = dataSnapshot.child(gameAddress).child(day).getValue(Storage.class);
 
-                for(int i = 0; i < 5; i++) {
-                    employee1.add(new RadarEntry(fingerSpeed.getMaxFingerSpeed().get(i)));
+                for(int i = 0; i < 3; i++) {
+                    employee1.add(new RadarEntry(wirstSpeed.getMaxMpuSpeed().get(i)));
                 }
 
                 //we create two radar data sets objects with these data
                 //maxFingerSpeed
-                RadarDataSet set1 = new RadarDataSet(employee1, "Max Finger's Speed");
+                RadarDataSet set1 = new RadarDataSet(employee1, "Max Wirst's Speed");
                 set1.setColor(Color.rgb(23, 185, 161));
                 set1.setFillColor(Color.rgb(23, 185, 161));
                 set1.setDrawFilled(true);
@@ -179,20 +179,17 @@ public class Speed extends Fragment {
                 ////////////////////////////////////////////////////////////////////
                 String[] AngleNumber = new String[5];
                 //Max
-                for(int i = 0; i < 5; i++) {
-                    AngleNumber[i] = String.valueOf(fingerSpeed.getMaxFingerSpeed().get(i));
+                for(int i = 0; i < 3; i++) {
+                    AngleNumber[i] = String.valueOf(wirstSpeed.getMaxMpuSpeed().get(i));
                 }
 
-                TextView MaxthumbSpeed = (TextView)view.findViewById(R.id.MaxthumbSpeed);
-                TextView MaxindexSpeed = (TextView)view.findViewById(R.id.MaxindexSpeed);
-                TextView MaxmiddleSpeed = (TextView)view.findViewById(R.id.MaxmiddleSpeed);
-                TextView MaxringSpeed = (TextView)view.findViewById(R.id.MaxringSpeed);
-                TextView MaxlittleSpeed = (TextView)view.findViewById(R.id.MaxlittleSpeed);
-                MaxthumbSpeed.setText(AngleNumber[0]);
-                MaxindexSpeed.setText(AngleNumber[1]);
-                MaxmiddleSpeed.setText(AngleNumber[2]);
-                MaxringSpeed.setText(AngleNumber[3]);
-                MaxlittleSpeed.setText(AngleNumber[4]);
+                TextView MaxXSpeed = (TextView)view.findViewById(R.id.MaxXSpeed);
+                TextView MaxYSpeed = (TextView)view.findViewById(R.id.MaxYSpeed);
+                TextView MaxZSpeed = (TextView)view.findViewById(R.id.MaxZSpeed);
+
+                MaxXSpeed.setText(AngleNumber[0]);
+                MaxYSpeed.setText(AngleNumber[1]);
+                MaxZSpeed.setText(AngleNumber[2]);
             }
 
             @Override

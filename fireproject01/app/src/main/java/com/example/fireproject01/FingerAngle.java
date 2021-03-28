@@ -35,7 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class Angle extends Fragment {
+public class FingerAngle extends Fragment {
 
     //we define min and max for the values on our Radar Chart
     public static final float MAX = 180, MIN = 0;
@@ -54,7 +54,7 @@ public class Angle extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //上傳到angle.xml
-        return inflater.inflate(R.layout.angle, container, false);
+        return inflater.inflate(R.layout.finger_angle, container, false);
     }
 
     @Override
@@ -132,7 +132,7 @@ public class Angle extends Fragment {
 
 
     //設定Radar chart數值
-    public void setValue(String gameName, final String day) {
+    public void setFingerValue(String gameName, final String day) {
         gameAddress = "data/" + name + "/" + gameName;
         databaseAngle.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -234,5 +234,4 @@ public class Angle extends Fragment {
             }
         });
     }
-
 }

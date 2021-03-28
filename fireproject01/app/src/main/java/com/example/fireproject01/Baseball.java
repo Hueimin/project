@@ -36,8 +36,8 @@ public class Baseball extends AppCompatActivity {
     private Spinner spinner;
 
     //將Angle與Speed.java宣告至此
-    private Angle angle;
-    private Speed speed;
+    private FingerAngle angle;
+    private FingerSpeed speed;
 
     DatabaseReference databaseAngle;
 
@@ -63,8 +63,8 @@ public class Baseball extends AppCompatActivity {
         final FragmentManager fragmentManager = getFragmentManager();
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        angle = new Angle();
-        speed = new Speed();
+        angle = new FingerAngle();
+        speed = new FingerSpeed();
 
         //傳資料給Angle,Speed.java
         Bundle bundle = new Bundle();
@@ -138,8 +138,8 @@ public class Baseball extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                angle.setValue("Baseball", time.get(position));
-                speed.setValue("Baseball", time.get(position));
+                angle.setFingerValue("Baseball", time.get(position));
+                speed.setFingerValue("Baseball", time.get(position));
             }
 
             @Override
