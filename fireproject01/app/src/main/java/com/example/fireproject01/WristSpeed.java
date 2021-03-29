@@ -138,10 +138,10 @@ public class WristSpeed extends Fragment {
                 ////////////////////////////////////////////////////////////////////
                 ArrayList<RadarEntry> employee1 = new ArrayList<>(); //最大手指速度 maxFingerSpeed
 
-                Storage wirstSpeed = dataSnapshot.child(gameAddress).child(day).getValue(Storage.class);
+                Storage wristSpeed = dataSnapshot.child(gameAddress).child(day).getValue(Storage.class);
 
                 for(int i = 0; i < 3; i++) {
-                    employee1.add(new RadarEntry(wirstSpeed.getMaxMpuSpeed().get(i)));
+                    employee1.add(new RadarEntry(wristSpeed.getMaxMpuSpeed().get(i)));
                 }
 
                 //we create two radar data sets objects with these data
@@ -180,7 +180,7 @@ public class WristSpeed extends Fragment {
                 String[] AngleNumber = new String[5];
                 //Max
                 for(int i = 0; i < 3; i++) {
-                    AngleNumber[i] = String.valueOf(wirstSpeed.getMaxMpuSpeed().get(i));
+                    AngleNumber[i] = String.valueOf(wristSpeed.getMaxMpuSpeed().get(i));
                 }
 
                 TextView MaxXSpeed = (TextView)view.findViewById(R.id.MaxXSpeed);

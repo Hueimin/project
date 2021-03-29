@@ -141,11 +141,11 @@ public class WristAngle extends Fragment {
                 ArrayList<RadarEntry> employee1 = new ArrayList<>(); //最大手腕角度 maxWirstAngle
                 ArrayList<RadarEntry> employee2 = new ArrayList<>(); //最小手腕角度 minWirstAngle
 
-                Storage wirstAngle = dataSnapshot.child(gameAddress).child(day).getValue(Storage.class);
+                Storage wristAngle = dataSnapshot.child(gameAddress).child(day).getValue(Storage.class);
 
                 for(int i = 0; i < 3; i++) {
-                    employee1.add(new RadarEntry(wirstAngle.getMaxMpuAngle().get(i)));
-                    employee2.add(new RadarEntry(wirstAngle.getMinMpuAngle().get(i)));
+                    employee1.add(new RadarEntry(wristAngle.getMaxMpuAngle().get(i)));
+                    employee2.add(new RadarEntry(wristAngle.getMinMpuAngle().get(i)));
                 }
 
                 //we create two radar data sets objects with these data
@@ -195,7 +195,7 @@ public class WristAngle extends Fragment {
                 String[] AngleNumber = new String[5];
                 //Max
                 for(int i = 0; i < 3; i++) {
-                    AngleNumber[i] = String.valueOf(wirstAngle.getMaxMpuAngle().get(i));
+                    AngleNumber[i] = String.valueOf(wristAngle.getMaxMpuAngle().get(i));
                 }
 
                 TextView MaxXAngle = view.findViewById(R.id.MaxXAngle);
@@ -208,7 +208,7 @@ public class WristAngle extends Fragment {
 
                 //Min
                 for(int i = 0; i < 3; i++) {
-                    AngleNumber[i] = String.valueOf(wirstAngle.getMinMpuAngle().get(i));
+                    AngleNumber[i] = String.valueOf(wristAngle.getMinMpuAngle().get(i));
                 }
 
                 TextView MinXAngle = view.findViewById(R.id.MinXAngle);
