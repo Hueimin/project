@@ -1,4 +1,4 @@
-package com.example.fireproject01;
+package com.example.fireproject01.gui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.fireproject01.R;
 
 public class Options extends AppCompatActivity {
 
@@ -30,7 +32,7 @@ public class Options extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(Options.this,Result.class);
+                intent.setClass(Options.this, Result.class);
                 intent.putExtras(getIntent().getExtras()); //bundle //傳NAME
                 startActivity(intent);
             }
@@ -44,7 +46,7 @@ public class Options extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(Options.this,Baseball.class);
+                intent.setClass(Options.this, Baseball.class);
                 intent.putExtras(getIntent().getExtras()); //bundle //傳NAME
                 startActivity(intent);
             }
@@ -57,7 +59,7 @@ public class Options extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(Options.this,Pingpong.class);
+                intent.setClass(Options.this, Pingpong.class);
                 intent.putExtras(getIntent().getExtras()); //bundle //傳NAME
                 startActivity(intent);
             }
@@ -71,7 +73,7 @@ public class Options extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(Options.this,Poker.class);
+                intent.setClass(Options.this, Poker.class);
                 intent.putExtras(getIntent().getExtras()); //bundle //傳NAME
                 startActivity(intent);
             }
@@ -84,7 +86,7 @@ public class Options extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(Options.this,Flappybee.class);
+                intent.setClass(Options.this, Flappybee.class);
                 intent.putExtras(getIntent().getExtras()); //bundle //傳NAME
                 startActivity(intent);
             }

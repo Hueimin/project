@@ -1,4 +1,4 @@
-package com.example.fireproject01;
+package com.example.fireproject01.data;
 
 public class Patient {
     String patientName;

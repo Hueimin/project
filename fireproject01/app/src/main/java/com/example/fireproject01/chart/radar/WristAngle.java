@@ -1,4 +1,4 @@
-package com.example.fireproject01;
+package com.example.fireproject01.chart.radar;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.fireproject01.R;
+import com.example.fireproject01.data.Storage;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;

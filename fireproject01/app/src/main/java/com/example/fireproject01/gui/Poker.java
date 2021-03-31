@@ -1,4 +1,4 @@
-package com.example.fireproject01;
+package com.example.fireproject01.gui;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -13,6 +13,11 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.fireproject01.chart.radar.FingerAngle;
+import com.example.fireproject01.chart.radar.FingerSpeed;
+import com.example.fireproject01.R;
+import com.example.fireproject01.chart.radar.WristAngle;
+import com.example.fireproject01.chart.radar.WristSpeed;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,9 +28,9 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Baseball extends AppCompatActivity {
+public class Poker extends AppCompatActivity {
 
-    public static final String GAME_NAME = "Baseball";
+    public static final String GAME_NAME = "Card Matching";
 
     private String gameAddress; //"data/" + take.getString("NAME") + "/" + GAME_NAME
 
@@ -36,22 +41,26 @@ public class Baseball extends AppCompatActivity {
     private Spinner spinner;
 
     //將Angle與Speed.java宣告至此
-    private FingerAngle angle;
-    private FingerSpeed speed;
+    private FingerAngle f_angle;
+    private FingerSpeed f_speed;
+    private WristAngle w_angle;
+    private WristSpeed w_speed;
 
     DatabaseReference databaseAngle;
 
-    Button angleButton;
-    Button speedButton;
+    Button f_angleButton;
+    Button f_speedButton;
+    Button w_angleButton;
+    Button w_speedButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_baseball);
+        setContentView(R.layout.activity_poker);
 
-        spinner = findViewById(R.id.spinner);
+        spinner = findViewById(R.id.spinner); //下拉式選單
 
-        take = this.getIntent().getExtras();
+        take = this.getIntent().getExtras(); //取得intent中的bundle物件
 
         //firebase
         databaseAngle = FirebaseDatabase.getInstance().getReference();
@@ -63,39 +72,78 @@ public class Baseball extends AppCompatActivity {
         final FragmentManager fragmentManager = getFragmentManager();
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        angle = new FingerAngle();
-        speed = new FingerSpeed();
+        f_angle = new FingerAngle();
+        f_speed = new FingerSpeed();
+        w_angle = new WristAngle();
+        w_speed = new WristSpeed();
 
         //傳資料給Angle,Speed.java
         Bundle bundle = new Bundle();
         bundle.putString("NAME", take.getString("NAME"));
-        angle.setArguments(bundle);
-        speed.setArguments(bundle);
+        f_angle.setArguments(bundle);
+        f_speed.setArguments(bundle);
+        w_angle.setArguments(bundle);
+        w_speed.setArguments(bundle);
 
-        fragmentTransaction.add(R.id.Frame, angle, "Angle");
-        fragmentTransaction.add(R.id.Frame, speed, "Speed");
-        fragmentTransaction.hide(speed);
+        fragmentTransaction.add(R.id.Frame, f_angle, "Angle");
+        fragmentTransaction.add(R.id.Frame, f_speed, "Speed");
+        fragmentTransaction.add(R.id.Frame, w_angle, "Angle");
+        fragmentTransaction.add(R.id.Frame, w_speed, "Speed");
+
+        fragmentTransaction.hide(f_speed);
+        fragmentTransaction.hide(w_angle);
+        fragmentTransaction.hide(w_speed);
         fragmentTransaction.commit();
 
-        angleButton = (Button)findViewById(R.id.ANGLE);
-        speedButton = (Button)findViewById(R.id.SPEED);
+        f_angleButton = (Button)findViewById(R.id.F_ANGLE);
+        f_speedButton = (Button)findViewById(R.id.F_SPEED);
+        w_angleButton = (Button)findViewById(R.id.W_ANGLE);
+        w_speedButton = (Button)findViewById(R.id.W_SPEED);
 
-        angleButton.setOnClickListener(new View.OnClickListener() {
+        f_angleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.show(angle);
-                fragmentTransaction.hide(speed);
+                fragmentTransaction.show(f_angle);
+                fragmentTransaction.hide(f_speed);
+                fragmentTransaction.hide(w_angle);
+                fragmentTransaction.hide(w_speed);
                 fragmentTransaction.commit();
             }
         });
 
-        speedButton.setOnClickListener(new View.OnClickListener() {
+        f_speedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.show(speed);
-                fragmentTransaction.hide(angle);
+                fragmentTransaction.show(f_speed);
+                fragmentTransaction.hide(f_angle);
+                fragmentTransaction.hide(w_angle);
+                fragmentTransaction.hide(w_speed);
+                fragmentTransaction.commit();
+            }
+        });
+
+        w_angleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.show(w_angle);
+                fragmentTransaction.hide(w_speed);
+                fragmentTransaction.hide(f_angle);
+                fragmentTransaction.hide(f_speed);
+                fragmentTransaction.commit();
+            }
+        });
+
+        w_speedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.show(w_speed);
+                fragmentTransaction.hide(w_angle);
+                fragmentTransaction.hide(f_angle);
+                fragmentTransaction.hide(f_speed);
                 fragmentTransaction.commit();
             }
         });
@@ -124,7 +172,7 @@ public class Baseball extends AppCompatActivity {
                 }
 
                 //放入timeList中，並由spinner顯示
-                ArrayAdapter timeList = new ArrayAdapter<>(Baseball.this, android.R.layout.simple_spinner_dropdown_item, choice);
+                ArrayAdapter timeList = new ArrayAdapter<>(Poker.this, android.R.layout.simple_spinner_dropdown_item, choice);
                 spinner.setAdapter(timeList);
             }
 
@@ -138,8 +186,10 @@ public class Baseball extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                angle.setFingerValue("Baseball", time.get(position));
-                speed.setFingerValue("Baseball", time.get(position));
+                f_angle.setFingerValue("Card Matching", time.get(position));
+                f_speed.setFingerValue("Card Matching", time.get(position));
+                w_angle.setWristValue("Card Matching", time.get(position));
+                w_speed.setWristValue("Card Matching", time.get(position));
             }
 
             @Override
@@ -149,3 +199,4 @@ public class Baseball extends AppCompatActivity {
         });
     }
 }
+

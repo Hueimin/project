@@ -1,4 +1,4 @@
-package com.example.fireproject01;
+package com.example.fireproject01.gui;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -13,6 +13,9 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.fireproject01.R;
+import com.example.fireproject01.chart.radar.WristAngle;
+import com.example.fireproject01.chart.radar.WristSpeed;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

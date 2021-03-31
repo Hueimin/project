@@ -9,13 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Flappybee"></activity>
-        <activity android:name=".Options" />
-        <activity android:name=".Result" />
-        <activity android:name=".Poker" />
-        <activity android:name=".Pingpong" />
-        <activity android:name=".Baseball" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".gui.Flappybee"></activity>
+        <activity android:name=".gui.Options" />
+        <activity android:name=".gui.Result" />
+        <activity android:name=".gui.Poker" />
+        <activity android:name=".gui.Pingpong" />
+        <activity android:name=".gui.Baseball" />
+        <activity android:name=".gui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
