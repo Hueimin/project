@@ -18,16 +18,6 @@ import java.util.ArrayList;
 
 public class Result extends AppCompatActivity {
 
-//    LineChart lineChart;
-//    LineChart lineChart1;
-//
-//    //we define min and max for the values on our Radar Chart
-//    public static final float MAX = 12, MIN = 1f;
-//    public static final int NB_QUALITIES = 5; //nb qualities on our Radar Chart
-//
-//    private RadarChart anglechart;
-//    private RadarChart speedchart;
-
     public final static String[] FINGER_NAME = {"Thumb", "Index Finger", "Middle Finger", "Ring Finger", "Little Finger"};
 
     private ViewPager pager;
@@ -89,8 +79,7 @@ public class Result extends AppCompatActivity {
         wristSpeedButton = findViewById(R.id.W_SPEED);
 
 //        lineChart = (LineChart)findViewById(R.id.angleChart);
-//        lineChart1 = (LineChart)findViewById(R.id.speedChart);
-//
+
 //        xtext();
 //        ytext();
 //
@@ -134,126 +123,7 @@ public class Result extends AppCompatActivity {
 //        values2.add(new Entry(6,40));
 //        text_all1(values2);
 //
-//
-//        //Radar Chart
-//
-//        /////////////////////////////angleChart/////////////////////////////
-//        anglechart = findViewById(R.id.angleRadarChart);
-//
-//        //we configure the radar chart
-//        anglechart.setBackgroundColor(Color.WHITE);
-//        anglechart.getDescription().setEnabled(false);
-//        anglechart.setWebLineWidth(1f); //設置直徑方向上那條線的寬度 //好像沒用
-//
-//        //useful to export your graph
-//        anglechart.setWebColor(Color.BLACK); //設置直徑線的顏色(5條線)
-//        anglechart.setWebLineWidth(1.5f); //設置直徑方向上那條線的寬度(5條線)
-//        anglechart.setWebColorInner(Color.BLACK); //設置圈線的顏色
-//        anglechart.setWebLineWidthInner(1.5f);
-//        anglechart.setWebAlpha(100); //設置顏色的透明度
-//
-//        setangleData();
-//
-//        //animate the chart //圖表數據顯示動畫
-//        anglechart.animateXY(1400, 1400, Easing.EasingOption.EaseInQuad, Easing.EasingOption.EaseInQuad);
-//
-//        //x axis
-//        XAxis xaAxis = anglechart.getXAxis();
-//        xaAxis.setTextSize(12f);
-//        xaAxis.setTypeface(Typeface.DEFAULT_BOLD); //五角的文字
-//        xaAxis.setYOffset(0); //?
-//        xaAxis.setXOffset(0); //?
-//        xaAxis.setValueFormatter(new IAxisValueFormatter() {
-//            //we will compare two employees in a radar chart
-//            //so we define qualities to compare
-//            private String[] qualities = new String[] {"大拇指", "食指", "中指", "無名指", "小拇指"};
-//
-//            @Override
-//            public String getFormattedValue(float value, AxisBase axis) {
-//                return qualities[(int)value % qualities.length];
-//            }
-//        });
-//
-//        xaAxis.setTextColor(Color.BLACK);
-//
-//        //Y axis
-//        YAxis yaAsix = anglechart.getYAxis();
-//        yaAsix.setLabelCount(NB_QUALITIES, true);
-//        yaAsix.setTextSize(9f);
-//        yaAsix.setAxisMinimum(MIN);
-//        yaAsix.setAxisMaximum(MAX); //we define min and max for axis
-//        yaAsix.setDrawLabels(false);
-//
-//        //we configure legend for our radar chart //圖例
-//        Legend la = anglechart.getLegend();
-//        la.setTextSize(15f);
-//        la.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-//        la.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-//        la.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-//        la.setDrawInside(false);
-//        la.setXEntrySpace(7f);
-//        la.setYEntrySpace(5f);
-//        la.setTextColor(Color.BLACK);
-//
-//
-//
-//        /////////////////////////////speedChart/////////////////////////////
-//        speedchart = findViewById(R.id.speedRadarChart);
-//
-//        //we configure the radar chart
-//        speedchart.setBackgroundColor(Color.WHITE);
-//        speedchart.getDescription().setEnabled(false);
-//        speedchart.setWebLineWidth(1f); //設置直徑方向上那條線的寬度 //好像沒用
-//
-//        //useful to export your graph
-//        speedchart.setWebColor(Color.BLACK); //設置直徑線的顏色(5條線)
-//        speedchart.setWebLineWidth(1.5f); //設置直徑方向上那條線的寬度(5條線)
-//        speedchart.setWebColorInner(Color.BLACK); //設置圈線的顏色
-//        speedchart.setWebLineWidthInner(1.5f);
-//        speedchart.setWebAlpha(100); //設置顏色的透明度
-//
-//        setspeedData();
-//
-//        //animate the chart //圖表數據顯示動畫
-//        speedchart.animateXY(1400, 1400, Easing.EasingOption.EaseInQuad, Easing.EasingOption.EaseInQuad);
-//
-//        //x axis
-//        XAxis xsAxis = speedchart.getXAxis();
-//        xsAxis.setTextSize(12f);
-//        xsAxis.setTypeface(Typeface.DEFAULT_BOLD); //五角的文字
-//        xsAxis.setYOffset(0); //?
-//        xsAxis.setXOffset(0); //?
-//        xsAxis.setValueFormatter(new IAxisValueFormatter() {
-//            //we will compare two employees in a radar chart
-//            //so we define qualities to compare
-//            private String[] qualities = new String[] {"大拇指", "食指", "中指", "無名指", "小拇指"};
-//
-//            @Override
-//            public String getFormattedValue(float value, AxisBase axis) {
-//                return qualities[(int)value % qualities.length];
-//            }
-//        });
-//
-//        xsAxis.setTextColor(Color.BLACK);
-//
-//        //Y axis
-//        YAxis ysAsix = speedchart.getYAxis();
-//        ysAsix.setLabelCount(NB_QUALITIES, true);
-//        ysAsix.setTextSize(9f);
-//        ysAsix.setAxisMinimum(MIN);
-//        ysAsix.setAxisMaximum(MAX); //we define min and max for axis
-//        ysAsix.setDrawLabels(false);
-//
-//        //we configure legend for our radar chart //圖例
-//        Legend ls = speedchart.getLegend();
-//        ls.setTextSize(15f);
-//        ls.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-//        ls.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-//        ls.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-//        ls.setDrawInside(false);
-//        ls.setXEntrySpace(7f);
-//        ls.setYEntrySpace(5f);
-//        ls.setTextColor(Color.BLACK);
+
     }
 //
 //    //設定X軸
@@ -324,103 +194,5 @@ public class Result extends AppCompatActivity {
 //        lineChart1.invalidate(); //為繪製圖表
 //    }
 //
-//    private void setangleData() {
-//        ArrayList<RadarEntry> employee1 = new ArrayList<>();
-//        ArrayList<RadarEntry> employee2 = new ArrayList<>();
-//
-//        for(int i = 0; i < NB_QUALITIES; i++) {
-//            float val1 = (int)(Math.random() * MAX) + MIN;
-//            employee1.add(new RadarEntry(val1));
-//
-//            float val2 = (int)(Math.random() * MAX) + MIN;
-//            employee2.add(new RadarEntry(val2));
-//        }
-//
-//        //we create two radar data sets objects with these data
-//        RadarDataSet set1 = new RadarDataSet(employee1, "Employee A");
-//        set1.setColor(Color.rgb(23, 185, 161));
-//        set1.setFillColor(Color.rgb(23, 185, 161));
-//        set1.setDrawFilled(true);
-//        set1.setFillAlpha(180);
-//        set1.setLineWidth(2f);
-//        set1.setDrawHighlightIndicators(false);
-//        set1.setDrawHighlightCircleEnabled(true);
-//
-//        RadarDataSet set2 = new RadarDataSet(employee2, "Employee B");
-//        set2.setColor(Color.rgb(255, 118, 137));
-//        set2.setFillColor(Color.rgb(255, 118, 137));
-//        set2.setDrawFilled(true);
-//        set2.setFillAlpha(180);
-//        set2.setLineWidth(2f);
-//        set2.setDrawHighlightIndicators(false);
-//        set2.setDrawHighlightCircleEnabled(true);
-//
-//        ArrayList<IRadarDataSet> sets = new ArrayList<>();
-//        sets.add(set1);
-//        sets.add(set2);
-//
-//        //we create Radar Data object which will be added to the Radar Chart for rendering
-//        RadarData data = new RadarData(sets);
-//        data.setValueTextSize(8f);
-//        data.setDrawValues(false);
-//        data.setValueTextColor(Color.BLACK);
-//
-//        anglechart.setData(data);
-//
-//        for (IDataSet<?> set : anglechart.getData().getDataSets()) {
-//            set.setDrawValues(!set.isDrawValuesEnabled());
-//        }
-//
-//        anglechart.invalidate();
-//    }
-//
-//    private void setspeedData() {
-//        ArrayList<RadarEntry> employee1 = new ArrayList<>();
-//        ArrayList<RadarEntry> employee2 = new ArrayList<>();
-//
-//        for(int i = 0; i < NB_QUALITIES; i++) {
-//            float val1 = (int)(Math.random() * MAX) + MIN;
-//            employee1.add(new RadarEntry(val1));
-//
-//            float val2 = (int)(Math.random() * MAX) + MIN;
-//            employee2.add(new RadarEntry(val2));
-//        }
-//
-//        //we create two radar data sets objects with these data
-//        RadarDataSet set1 = new RadarDataSet(employee1, "Employee A");
-//        set1.setColor(Color.rgb(23, 185, 161));
-//        set1.setFillColor(Color.rgb(23, 185, 161));
-//        set1.setDrawFilled(true);
-//        set1.setFillAlpha(180);
-//        set1.setLineWidth(2f);
-//        set1.setDrawHighlightIndicators(false);
-//        set1.setDrawHighlightCircleEnabled(true);
-//
-//        RadarDataSet set2 = new RadarDataSet(employee2, "Employee B");
-//        set2.setColor(Color.rgb(255, 118, 137));
-//        set2.setFillColor(Color.rgb(255, 118, 137));
-//        set2.setDrawFilled(true);
-//        set2.setFillAlpha(180);
-//        set2.setLineWidth(2f);
-//        set2.setDrawHighlightIndicators(false);
-//        set2.setDrawHighlightCircleEnabled(true);
-//
-//        ArrayList<IRadarDataSet> sets = new ArrayList<>();
-//        sets.add(set1);
-//        sets.add(set2);
-//
-//        //we create Radar Data object which will be added to the Radar Chart for rendering
-//        RadarData data = new RadarData(sets);
-//        data.setValueTextSize(8f);
-//        data.setDrawValues(false);
-//        data.setValueTextColor(Color.BLACK);
-//
-//        speedchart.setData(data);
-//
-//        for (IDataSet<?> set : speedchart.getData().getDataSets()) {
-//            set.setDrawValues(!set.isDrawValuesEnabled());
-//        }
-//
-//        speedchart.invalidate();
-//    }
+
 }
