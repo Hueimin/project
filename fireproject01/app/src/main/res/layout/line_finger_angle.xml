@@ -23,7 +23,7 @@
         android:id="@+id/angleChart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#F3D670"
+        android:background="#D3F7EF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

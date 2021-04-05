@@ -38,7 +38,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class LineFingerSpeed extends Fragment {
+public class LineWristSpeed extends Fragment {
 
     private LineChart lineChart;
 
@@ -51,9 +51,9 @@ public class LineFingerSpeed extends Fragment {
         }
     });
 
-    private int fingerNumber;
+    private int wristNumber;
 
-    DatabaseReference databaseSpeed;
+    private DatabaseReference databaseSpeed;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public class LineFingerSpeed extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.line_finger_speed, container, false);
+        return inflater.inflate(R.layout.line_wrist_speed, container, false);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class LineFingerSpeed extends Fragment {
         super.onAttach(context);
         Bundle take = getArguments();
         gameAddress = "data/" + take.getString("NAME");
-        fingerNumber = take.getInt("FINGER_NAME");
+        wristNumber = take.getInt("WRIST_NAME");
     }
 
     @Override
@@ -80,12 +80,12 @@ public class LineFingerSpeed extends Fragment {
 
         databaseSpeed = FirebaseDatabase.getInstance().getReference();
 
-        //標示為哪隻手指的數據
-        TextView labelText = view.findViewById(R.id.result_finger_speed_text);
-        labelText.setText(Result.FINGER_NAME[fingerNumber] + "'s Speed");
+        //標示為哪軸的數據
+        TextView labelText = view.findViewById(R.id.result_wrist_speed_text);
+        labelText.setText(Result.WRIST_NAME[wristNumber] + "'s Speed");
 
         //linechart
-        lineChart = (LineChart) view.findViewById(R.id.speedChart);
+        lineChart = (LineChart)view.findViewById(R.id.speedChart);
 
         databaseSpeed.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -93,16 +93,16 @@ public class LineFingerSpeed extends Fragment {
                 //存遊戲名稱到iter(迭代)
                 Iterator<DataSnapshot> gameIter = dataSnapshot.child(gameAddress).getChildren().iterator();
 
-                while (gameIter.hasNext()) {
+                while(gameIter.hasNext()) {
                     DataSnapshot game = gameIter.next(); //快照
                     Iterator<DataSnapshot> timeIter = game.getChildren().iterator();
-                    while (timeIter.hasNext()) {
+                    while(timeIter.hasNext()) {
                         DataSnapshot time = timeIter.next();
 
-                        //排除時間為Infinity的值
-                        if (time.child("maxFingerSpeed/" + fingerNumber).getValue().equals("Infinity")) continue;
+                        //排除數據為Infinity的值
+                        if(time.child("maxMpuSpeed/" + wristNumber).getValue().equals("Infinity")) continue;
 
-                        maxValues.put(Long.parseLong(time.getKey()), time.child("maxFingerSpeed/" + fingerNumber).getValue(Float.class));
+                        maxValues.put(Long.parseLong(time.getKey()), time.child("maxMpuSpeed/" + wristNumber).getValue(Float.class));
                     }
                 }
 
@@ -127,11 +127,11 @@ public class LineFingerSpeed extends Fragment {
                 /////////////////////////////////////////////////////////////////////
                 ////////////////////////////數據顯示之內容////////////////////////////
                 /////////////////////////////////////////////////////////////////////
-                ArrayList<Entry> max = new ArrayList<>();
+                ArrayList<Entry> max = new ArrayList<>(), min = new ArrayList<>();
 
                 Iterator<Map.Entry<Long, Float>> Values = maxValues.entrySet().iterator();
                 //Max
-                while (Values.hasNext()) {
+                while(Values.hasNext()) {
                     Map.Entry<Long, Float> data = Values.next();
                     max.add(new Entry(data.getKey(), data.getValue()));
                 }
@@ -175,7 +175,7 @@ public class LineFingerSpeed extends Fragment {
 
     private void Set(ArrayList<Entry> max) {
         //Max
-        LineDataSet maxValue = new LineDataSet(max, "最大值"); //LineDataSet設定線數資料顯示方式 //圖例
+        LineDataSet maxValue = new LineDataSet(max,"最大值"); //LineDataSet設定線數資料顯示方式 //圖例
         //可以透過setMode設定顯示的線條
         //立方曲線CUBIC_BEZIER
         //水平曲線HORIZONTAL_BEZIER
@@ -184,7 +184,7 @@ public class LineFingerSpeed extends Fragment {
         maxValue.setColor(Color.rgb(23, 185, 161));
         maxValue.setLineWidth(2);
         maxValue.setCircleHoleRadius(4); //設置焦點圓心大小
-        maxValue.enableDashedHighlightLine(5, 5, 0);
+        maxValue.enableDashedHighlightLine(5,5,0);
         //enableDashedHighlightLine(線寬度, 分隔寬度, 階段)，為點擊後的虛線顯示樣式
         maxValue.setHighlightLineWidth(2);
         maxValue.setHighlightEnabled(true); //設定是否禁用點擊高亮線

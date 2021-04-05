@@ -33,7 +33,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
@@ -59,7 +58,7 @@ public class LineFingerAngle extends Fragment {
 
     private int fingerNumber;
 
-    private DatabaseReference databaseDate;
+    private DatabaseReference databaseAngle;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,15 +83,16 @@ public class LineFingerAngle extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        databaseDate = FirebaseDatabase.getInstance().getReference();
+        databaseAngle = FirebaseDatabase.getInstance().getReference();
 
-        TextView text = view.findViewById(R.id.result_finger_angle_text);
-        text.setText(Result.FINGER_NAME[fingerNumber] + "'s Angle");
+        //標示為哪隻手指的數據
+        TextView labelText = view.findViewById(R.id.result_finger_angle_text);
+        labelText.setText(Result.FINGER_NAME[fingerNumber] + "'s Angle");
 
         //linechart
         lineChart = (LineChart)view.findViewById(R.id.angleChart);
 
-        databaseDate.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseAngle.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //存遊戲名稱到iter(迭代)
@@ -102,21 +102,22 @@ public class LineFingerAngle extends Fragment {
                     DataSnapshot game = gameIter.next(); //快照
                     Iterator<DataSnapshot> timeIter = game.getChildren().iterator();
                     while(timeIter.hasNext()) {
-                        DataSnapshot data = timeIter.next();
-                        if(data.child("maxFingerAngle/" + fingerNumber).getValue().equals("Infinity")) continue;
-                        maxValues.put(Long.parseLong(data.getKey()), data.child("maxFingerAngle/" + fingerNumber).getValue(Float.class));
-                        minValues.put(Long.parseLong(data.getKey()), data.child("minFingerAngle/" + fingerNumber).getValue(Float.class));
+                        DataSnapshot time = timeIter.next();
+
+                        //排除數據為Infinity的值
+                        if(time.child("maxFingerAngle/" + fingerNumber).getValue().equals("Infinity")) continue;
+
+                        maxValues.put(Long.parseLong(time.getKey()), time.child("maxFingerAngle/" + fingerNumber).getValue(Float.class));
+                        minValues.put(Long.parseLong(time.getKey()), time.child("minFingerAngle/" + fingerNumber).getValue(Float.class));
                     }
                 }
-                System.out.println(Arrays.toString(maxValues.values().toArray()));
-                System.out.println(Arrays.toString(minValues.values().toArray()));
 
                 xtext();
                 ytext();
 
                 //X軸標題
                 Description description = new Description();
-                description.setText("日期(date)");
+                description.setText("日期(Date)");
                 description.setTextSize(10);
                 description.setTextColor(Color.BLACK);
                 lineChart.setDescription(description);
@@ -126,24 +127,31 @@ public class LineFingerAngle extends Fragment {
                 legend.setTextSize(10);
 
                 //沒有數據出現時的顯示方式
-                lineChart.setNoDataText("無數據可顯示QQ");
+                lineChart.setNoDataText("無數據可顯示");
                 lineChart.setNoDataTextColor(Color.BLUE);
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-                //數據顯示之內容
+                /////////////////////////////////////////////////////////////////////
+                ////////////////////////////數據顯示之內容////////////////////////////
+                /////////////////////////////////////////////////////////////////////
                 ArrayList<Entry> max = new ArrayList<>(), min = new ArrayList<>();
-                Iterator<Map.Entry<Long, Float>> iter = maxValues.entrySet().iterator();
-                while(iter.hasNext()) {
-                    Map.Entry<Long, Float> data = iter.next();
+
+                Iterator<Map.Entry<Long, Float>> Values = maxValues.entrySet().iterator();
+                //Max
+                while(Values.hasNext()) {
+                    Map.Entry<Long, Float> data = Values.next();
                     max.add(new Entry(data.getKey(), data.getValue()));
                 }
-                iter = minValues.entrySet().iterator();
-                while(iter.hasNext()) {
-                    Map.Entry<Long, Float> data = iter.next();
+
+                //Min
+                Values = minValues.entrySet().iterator();
+                while(Values.hasNext()) {
+                    Map.Entry<Long, Float> data = Values.next();
                     min.add(new Entry(data.getKey(), data.getValue()));
                 }
-//      maxValues.forEach((k, v) -> max.add(new Entry(k, v));
-                text_all(max, min);
+
+//                maxValues.forEach((k, v) -> max.add(new Entry(k, v));
+
+                Set(max, min);
                 lineChart.invalidate(); //為繪製圖表
             }
 
@@ -160,6 +168,7 @@ public class LineFingerAngle extends Fragment {
         //setPosition為設置X軸顯示位置，預設在上方，XAxis.XAxisPosition.BOTTOM則是在下方
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
+        //自訂X軸數值顯示為日期
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             public String getFormattedValue(float value, AxisBase axis) {
                 return DateFormat.format("MM/dd", new Date((long) value)).toString();
@@ -177,41 +186,45 @@ public class LineFingerAngle extends Fragment {
         rightAxis.setEnabled(false);
     }
 
-    private void text_all(ArrayList<Entry> max, ArrayList<Entry> min) {
-        LineDataSet set1 = new LineDataSet(max,"幅度"); //LineDataSet設定線數資料顯示方式 //圖例
+    private void Set(ArrayList<Entry> max, ArrayList<Entry> min) {
+        //Max
+        LineDataSet maxValue = new LineDataSet(max,"最大值"); //LineDataSet設定線數資料顯示方式 //圖例
         //可以透過setMode設定顯示的線條
         //立方曲線CUBIC_BEZIER
         //水平曲線HORIZONTAL_BEZIER
         //折線LINEAR
-        set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        set1.setColor(Color.GREEN);
-        set1.setLineWidth(2);
-        set1.setCircleHoleRadius(4); //設置焦點圓心大小
-        set1.enableDashedHighlightLine(5,5,0);
+        maxValue.setMode(LineDataSet.Mode.LINEAR);
+        maxValue.setColor(Color.rgb(23, 185, 161));
+        maxValue.setLineWidth(2);
+        maxValue.setCircleHoleRadius(4); //設置焦點圓心大小
+        maxValue.enableDashedHighlightLine(5,5,0);
         //enableDashedHighlightLine(線寬度, 分隔寬度, 階段)，為點擊後的虛線顯示樣式
-        set1.setHighlightLineWidth(2);
-        set1.setHighlightEnabled(true); //設定是否禁用點擊高亮線
-        set1.setHighLightColor(Color.RED);
-        set1.setDrawFilled(false); //設定禁用範圍背景填充
+        maxValue.setHighlightLineWidth(2);
+        maxValue.setHighlightEnabled(true); //設定是否禁用點擊高亮線
+        maxValue.setHighLightColor(Color.RED);
+        maxValue.setDrawFilled(false); //設定禁用範圍背景填充
+        maxValue.setValueTextSize(10);
 
-        LineDataSet set2 = new LineDataSet(min,"幅度"); //LineDataSet設定線數資料顯示方式 //圖例
+        //Min
+        LineDataSet minValue = new LineDataSet(min,"最小值"); //LineDataSet設定線數資料顯示方式 //圖例
         //可以透過setMode設定顯示的線條
         //立方曲線CUBIC_BEZIER
         //水平曲線HORIZONTAL_BEZIER
         //折線LINEAR
-        set2.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        set2.setColor(Color.GRAY);
-        set2.setLineWidth(2);
-        set2.setCircleHoleRadius(4); //設置焦點圓心大小
-        set2.enableDashedHighlightLine(5,5,0);
+        minValue.setMode(LineDataSet.Mode.LINEAR);
+        minValue.setColor(Color.rgb(255, 118, 137));
+        minValue.setLineWidth(2);
+        minValue.setCircleHoleRadius(4); //設置焦點圓心大小
+        minValue.enableDashedHighlightLine(5,5,0);
         //enableDashedHighlightLine(線寬度, 分隔寬度, 階段)，為點擊後的虛線顯示樣式
-        set2.setHighlightLineWidth(2);
-        set2.setHighlightEnabled(true); //設定是否禁用點擊高亮線
-        set2.setHighLightColor(Color.RED);
-        set2.setDrawFilled(false); //設定禁用範圍背景填充
+        minValue.setHighlightLineWidth(2);
+        minValue.setHighlightEnabled(true); //設定是否禁用點擊高亮線
+        minValue.setHighLightColor(Color.BLACK);
+        minValue.setDrawFilled(false); //設定禁用範圍背景填充
+        minValue.setValueTextSize(10);
 
-        LineData data = new LineData(set1); //創建LineChart折線圖的數據集合
-        data.addDataSet(set2);
+        LineData data = new LineData(maxValue); //創建LineChart折線圖的數據集合
+        data.addDataSet(minValue);
         lineChart.setData(data);
     }
 }
