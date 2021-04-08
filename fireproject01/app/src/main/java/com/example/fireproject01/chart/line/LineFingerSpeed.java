@@ -40,9 +40,11 @@ import java.util.TreeMap;
 
 public class LineFingerSpeed extends Fragment {
 
+    private final String[] fingerGame = new String[] {"Baseball", "Flappy Bird", "Card Matching"};
+
     private LineChart lineChart;
 
-    private String gameAddress; //"data/" + take.getString("NAME") + "/" + GAME_NAME
+    private String[] gameAddress; //"data/" + take.getString("NAME") + "/" + GAME_NAME
 
     private TreeMap<Long, Float> maxValues = new TreeMap<>(new Comparator<Long>() {
         @Override
@@ -70,7 +72,11 @@ public class LineFingerSpeed extends Fragment {
         //傳NAME的路徑至此
         super.onAttach(context);
         Bundle take = getArguments();
-        gameAddress = "data/" + take.getString("NAME");
+        gameAddress = new String[fingerGame.length];
+        for(int i = 0; i < fingerGame.length; i++) {
+            gameAddress[i] = "data/" + take.getString("NAME") + "/" + fingerGame[i];
+        }
+
         fingerNumber = take.getInt("FINGER_NAME");
     }
 
@@ -90,17 +96,15 @@ public class LineFingerSpeed extends Fragment {
         databaseSpeed.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //存遊戲名稱到iter(迭代)
-                Iterator<DataSnapshot> gameIter = dataSnapshot.child(gameAddress).getChildren().iterator();
-
-                while (gameIter.hasNext()) {
-                    DataSnapshot game = gameIter.next(); //快照
-                    Iterator<DataSnapshot> timeIter = game.getChildren().iterator();
+                //存時間到iter(迭代)
+                for(int i = 0; i < gameAddress.length; i++) {
+                    Iterator<DataSnapshot> timeIter = dataSnapshot.child(gameAddress[i]).getChildren().iterator();
                     while (timeIter.hasNext()) {
                         DataSnapshot time = timeIter.next();
 
                         //排除時間為Infinity的值
-                        if (time.child("maxFingerSpeed/" + fingerNumber).getValue().equals("Infinity")) continue;
+                        if (time.child("maxFingerSpeed/" + fingerNumber).getValue().equals("Infinity"))
+                            continue;
 
                         maxValues.put(Long.parseLong(time.getKey()), time.child("maxFingerSpeed/" + fingerNumber).getValue(Float.class));
                     }
