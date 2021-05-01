@@ -1,5 +1,6 @@
 package com.example.fireproject01.gui;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -9,10 +10,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.fireproject01.Delete;
 import com.example.fireproject01.chart.radar.FingerAngle;
 import com.example.fireproject01.chart.radar.FingerSpeed;
 import com.example.fireproject01.R;
@@ -47,6 +50,9 @@ public class Flappybee extends AppCompatActivity {
     Button angleButton;
     Button speedButton;
 
+    Button delete;
+    String chooseTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +76,7 @@ public class Flappybee extends AppCompatActivity {
         speed = new FingerSpeed();
 
         //傳資料給Angle,Speed.java
-        Bundle bundle = new Bundle();
+        final Bundle bundle = new Bundle();
         bundle.putString("NAME", take.getString("NAME"));
         angle.setArguments(bundle);
         speed.setArguments(bundle);
@@ -143,11 +149,39 @@ public class Flappybee extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 angle.setFingerValue("Flappy Bird", time.get(position));
                 speed.setFingerValue("Flappy Bird", time.get(position));
+                chooseTime = time.get(position);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        delete = (Button)findViewById(R.id.Delete);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog dialog = new AlertDialog.Builder(Flappybee.this)
+                        .setTitle("Alert")
+                        .setMessage("Are you sure you want to delete?")
+                        .setPositiveButton("OK",null)
+                        .setNegativeButton("Cancel", null)
+                        .show();
+
+                Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Delete.delete(take.getString("NAME"), GAME_NAME, chooseTime);
+                        time.remove(chooseTime);
+
+                        recreate();
+
+                        String deleteTime = DateFormat.format("yyyy/MM/dd HH:mm:ss ' is already removed'", Long.parseLong(chooseTime)).toString();
+                        Toast.makeText(Flappybee.this, deleteTime, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }

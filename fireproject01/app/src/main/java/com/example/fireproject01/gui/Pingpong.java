@@ -1,5 +1,6 @@
 package com.example.fireproject01.gui;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -9,10 +10,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.PagerAdapter;
 
+import com.example.fireproject01.Delete;
 import com.example.fireproject01.R;
 import com.example.fireproject01.chart.radar.WristAngle;
 import com.example.fireproject01.chart.radar.WristSpeed;
@@ -21,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.okhttp.internal.framed.Ping;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -46,6 +51,9 @@ public class Pingpong extends AppCompatActivity {
 
     Button angleButton;
     Button speedButton;
+
+    Button delete;
+    String chooseTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,11 +151,39 @@ public class Pingpong extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 angle.setWristValue("Table Tennis", time.get(position));
                 speed.setWristValue("Table Tennis", time.get(position));
+                chooseTime = time.get(position);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        delete = (Button)findViewById(R.id.Delete);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog dialog = new AlertDialog.Builder(Pingpong.this)
+                        .setTitle("Alert")
+                        .setMessage("Are you sure you want to delete?")
+                        .setPositiveButton("OK",null)
+                        .setNegativeButton("Cancel", null)
+                        .show();
+
+                Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Delete.delete(take.getString("NAME"), GAME_NAME, chooseTime);
+                        time.remove(chooseTime);
+
+                        recreate();
+
+                        String deleteTime = DateFormat.format("yyyy/MM/dd HH:mm:ss ' is already removed'", Long.parseLong(chooseTime)).toString();
+                        Toast.makeText(Pingpong.this, deleteTime, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }

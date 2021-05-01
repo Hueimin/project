@@ -1,18 +1,22 @@
 package com.example.fireproject01.gui;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.fireproject01.Delete;
 import com.example.fireproject01.chart.radar.FingerAngle;
 import com.example.fireproject01.chart.radar.FingerSpeed;
 import com.example.fireproject01.R;
@@ -46,6 +50,9 @@ public class Baseball extends AppCompatActivity {
 
     Button angleButton;
     Button speedButton;
+
+    Button delete;
+    String chooseTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +130,7 @@ public class Baseball extends AppCompatActivity {
 
                 String[] choice = new String[time.size()]; //將choice的大小設的和time一樣
                 for(int i = 0; i < time.size(); i++) {
-                    choice[i] = DateFormat.format("yyyy/MM/dd 'at' HH:mm:ss", new Date(Long.parseLong(time.get(i)))).toString();
+                    choice[i] = DateFormat.format("yyyy/MM/dd 'at' HH:mm:ss", Long.parseLong(time.get(i))).toString();
                 }
 
                 //放入timeList中，並由spinner顯示
@@ -143,11 +150,39 @@ public class Baseball extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 angle.setFingerValue("Baseball", time.get(position));
                 speed.setFingerValue("Baseball", time.get(position));
+                chooseTime = time.get(position);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        delete = (Button)findViewById(R.id.Delete);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog dialog = new AlertDialog.Builder(Baseball.this)
+                        .setTitle("Alert")
+                        .setMessage("Are you sure you want to delete?")
+                        .setPositiveButton("OK",null)
+                        .setNegativeButton("Cancel", null)
+                        .show();
+
+                Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Delete.delete(take.getString("NAME"), GAME_NAME, chooseTime);
+                        time.remove(chooseTime);
+
+                        recreate();
+
+                        String deleteTime = DateFormat.format("yyyy/MM/dd HH:mm:ss ' is already removed'", Long.parseLong(chooseTime)).toString();
+                        Toast.makeText(Baseball.this, deleteTime, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
